@@ -252,6 +252,9 @@ best_2_M <- c("ABSNJZH","AREA_ACR","lagged_flux")
 best_2_X <- c("ABSNJZH","AREA","lagged_flux")
 
 
+best_3_M <- c("TOTUSJZ","TOTUSJH","ABSNJZH","lagged_flux")
+best_3_X <- c("MEANPOT","TOTPOT","MEANSHR","lagged_flux" )
+
 figure_good_for_M_and_X <- function(){
   
    
