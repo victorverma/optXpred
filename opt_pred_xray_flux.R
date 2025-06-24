@@ -245,7 +245,8 @@ scrambled_examples <- function(lag_hours_block_maxima = 24, lag_hours_prediction
 good_for_X = c("AREA_ACR","MEANJZH","ABSNJZH","SHRGT45",
                "SAVNCPP","MEANGBZ","MEANSHR","NACR",
                "TOTUSJZ","SIZE","lagged_flux");
-good_for_M = c("TOTUSJH", "AREA_ACR","ABSNJZH",
+
+good_for_M_and_X = c("TOTUSJH", "AREA_ACR","ABSNJZH",
                "SAVNCPP", "TOTPOT");
 
 best_2_M <- c("ABSNJZH","AREA_ACR","lagged_flux")
@@ -613,11 +614,14 @@ PAM_plot_by_alarm <- function(PAM, title_text = "") {
 
  gen_figures_xray_flux_pred <- function(dir="~/Dropbox/doc/software/grand function respository/optXpred/figures/",via_alarm=TRUE){
    df = get_flux_and_sharp_data(24,24,F)
-   good_for_M = c("TOTUSJH", "AREA_ACR","ABSNJZH","SAVNCPP", "TOTPOT");
+   good_for_M_and_X = c("TOTUSJH", "AREA_ACR","ABSNJZH","SAVNCPP", "TOTPOT");
    #good_for_X = c("USFLUX","TOTUSJH", "AREA_ACR","ABSNJZH","SAVNCPP", "TOTPOT");
    #good_for_X = c("USFLUX","AREA_ACR","ABSNJZH","SAVNCPP", "TOTPOT");
    
-   out = pred_flux(df,c(2010,2017),test_interval = c(2017.01,2025), to_plot = T, selected_variables = good_for_M,prob = 0.9); 
+   set.seed(2)
+   out = pred_flux(df,c(2010,2017),test_interval = c(2017.01,2025), to_plot = T, selected_variables = good_for_M_and_X,prob = 0.97,extrapolate_tail_CDF = F); 
+  ## out = pred_flux(df,c(2010,2017),test_interval = c(2017.01,2025), to_plot = T, selected_variables = good_for_X,prob = 0.97,extrapolate_tail_CDF = F); 
+  ## out = pred_flux(df,c(2010,2017),test_interval = c(2017.01,2025), to_plot = T, selected_variables = c(), prob = 0.97,extrapolate_tail_CDF = F); 
    
    if(via_alarm){
      plt_C = PAM_plot_by_alarm(out$PAM_C,"Train (2010-2017) Test (2017-2025): C+ class")
