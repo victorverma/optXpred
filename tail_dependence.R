@@ -6,7 +6,7 @@
 # The following function computes the tal-dependence coefficient between two vectors
 #
 library(Rcpp)
-tdep <- function(x,y,p){
+tdep <- function(x,y,p,se_return=F){
   L = c();
   for (pi in p){
     if (pi==1){
@@ -17,7 +17,12 @@ tdep <- function(x,y,p){
     L = c(L, sum((x>qx)&(y>qy))/(length(x)*(1-pi)))
     }
   }
+  n = length(x);
+  if (se_return){
+    return(list("L"=L,"se"=sqrt(L*(1-L*(1-p))/(n*(1-p)) )))
+  } else{
   return(L)
+  }
 }
 
 #

@@ -137,7 +137,7 @@ calibrate_alpha <-function(rf,c,u,theta,d,N_theta = d*1e4,a0 = 1e-5,a1 = 1-a0,it
   return(a_new)
 }
 
-get_h_opt <- function(y,x,x_test,prob=0.8,verbose=TRUE){
+get_h_opt <- function(y,x,x_test,prob=0.8,verbose=TRUE, n_trees=2000){
  d=dim(x)[2]
  #
  # Step 1: Conditioning on extreme values.
@@ -152,7 +152,7 @@ get_h_opt <- function(y,x,x_test,prob=0.8,verbose=TRUE){
  #
  # Step 3: Computing a random forest for the quantiles
  #
- rf <- get_qreg_forest(u,theta)
+ rf <- get_qreg_forest(u,theta,n_trees = n_trees)
  #
  # Step 4: Calibrating the quantile level alpha to the constraint using 
  #        binary search and a naive Monte Carlo method.
@@ -185,7 +185,7 @@ standardize_train_data <- function(y,x){
   return(list("y"=yr,"x"=xr,"y_original"=y,"x_original"=x))
 }
 
-opt_pred <- function(y,x,x_test,prob=0.8,verbose=TRUE, extrapolate_tail_CDF = TRUE){
+opt_pred <- function(y,x,x_test,prob=0.8,verbose=TRUE, extrapolate_tail_CDF = TRUE, n_trees=2000) {
   #
   # This is a very general wrapper function that: 
   #   (1) rank-transforms the training data to standard 1-Pareto
@@ -200,7 +200,7 @@ opt_pred <- function(y,x,x_test,prob=0.8,verbose=TRUE, extrapolate_tail_CDF = TR
   y_train = out$y;
   x_train = out$x;
   colnames(x_test) = colnames(x_train)
-  y_pred = get_h_opt(y=y_train, x = x_train, x_test = x_test,prob = prob, verbose = verbose)
+  y_pred = get_h_opt(y=y_train, x = x_train, x_test = x_test,prob = prob, verbose = verbose,n_trees=n_trees)
   return(list("y_train"=y_train,"x_train"=x_train,"y_pred"=y_pred,"x_test"=x_test))
 }
 
