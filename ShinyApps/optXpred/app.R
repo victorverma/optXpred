@@ -2,8 +2,8 @@ library(shiny)
 library(DT)
 library(plotly)
 
-source("../opt_ext_pred.R")
-source("../tail_dependence.R")
+source("/home/sstoev/Dropbox/doc/GitHub/optXpred/opt_ext_pred.R")
+source("/home/sstoev/Dropbox/doc/GitHub/optXpred/tail_dependence.R")
 
 to_pareto_scale <- function(y){
   n =length(y);
@@ -119,7 +119,7 @@ server <- function(input, output, session) {
     data$train <- if (!is.null(input$train_file)) {
       read.csv(input$train_file$datapath)
     } else {
-      read.csv("../data/train_flux_24_2015_2017.csv")
+      read.csv("~/ShinyApps/optXpred/data/train_flux_24_2015_2017.csv")
     }
   })
   
@@ -127,7 +127,7 @@ server <- function(input, output, session) {
     data$test <- if (!is.null(input$test_file)) {
       read.csv(input$test_file$datapath)
     } else {
-      read.csv("../data/test_flux_24_2018_2024.csv")
+      read.csv("~/ShinyApps/optXpred/data/test_flux_24_2018_2024.csv")
     }
   })
   
