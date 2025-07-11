@@ -6,7 +6,7 @@
 # The following function computes the tal-dependence coefficient between two vectors
 #
 library(Rcpp)
-tdep <- function(x,y,p,se_return=F){
+tdep <- function(x,y,p,se_return=F,to_plot=F){
   L = c();
   for (pi in p){
     if (pi==1){
@@ -18,8 +18,15 @@ tdep <- function(x,y,p,se_return=F){
     }
   }
   n = length(x);
+  se = sqrt(L*(1-L*(1-p))/(n*(1-p)));
+  if (to_plot){
+    plot(p,L,type="l",ylab="Lambda(p)",
+         main="Empirical Tail Dependence with Pointwise 0.95-CI",ylim=c(0,1))
+    lines(p,L-1.96*se,col="red",lty=2)
+    lines(p,L+1.96*se,col="red",lty=2)
+  }
   if (se_return){
-    return(list("L"=L,"se"=sqrt(L*(1-L*(1-p))/(n*(1-p)) )))
+    return(list("L"=L,"se"=se ))
   } else{
   return(L)
   }
